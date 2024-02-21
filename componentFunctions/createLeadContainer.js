@@ -61,7 +61,6 @@ function createLeadContainer(texts,chatsContainerComponent,chats,url){
     sendButton.innerText="send"
 
     sendButton.addEventListener('click', function () {
-
         chatsContainerComponent.removeChild(parent)
         let chatInnerContainer = createOneChat("dots",chats)
 
@@ -70,6 +69,7 @@ function createLeadContainer(texts,chatsContainerComponent,chats,url){
         chatsContainerComponent.scrollTop = chatsContainerComponent.scrollHeight;
 
         let children = parent.childNodes;
+
         const data = {
             prevChats:chats,
             phone: children[0].childNodes[1].value,
@@ -94,6 +94,11 @@ function createLeadContainer(texts,chatsContainerComponent,chats,url){
                 chatsContainerComponent.scrollTop = chatsContainerComponent.scrollHeight;
             })
             .catch(n=>{
+                try{
+                    chatsContainerComponent.removeChild(chatInnerContainer)
+                }
+                catch{}
+
                 let newChat=createOneChat({"role":"system","content": "Error"},chats)
                 chatsContainerComponent.appendChild(newChat)
                 chatsContainerComponent.scrollTop = chatsContainerComponent.scrollHeight;
