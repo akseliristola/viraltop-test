@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if(next.title.title.startsWith("!")){
                         let newRes=createOneChat({"role":"system","content":next.title.title.slice(1)},chats)
                         chatsContainerComponent.appendChild(newRes)
-                        let leadContainer=createLeadContainer(next.texts,chatsContainerComponent,chats)
+                        let leadContainer=createLeadContainer(next.texts,chatsContainerComponent,chats,url)
                         chatsContainerComponent.appendChild(leadContainer)
 
                     }

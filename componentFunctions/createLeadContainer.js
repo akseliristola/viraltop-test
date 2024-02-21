@@ -1,6 +1,6 @@
 import createOneChat from "./createOneChat.js"
 
-function createLeadContainer(texts,chatsContainerComponent,chats){
+function createLeadContainer(texts,chatsContainerComponent,chats,url){
     let parent = document.createElement("div")
     parent.style.width="250px"
     parent.style.display="flex"
@@ -85,7 +85,7 @@ function createLeadContainer(texts,chatsContainerComponent,chats){
             body: JSON.stringify(data) 
         }
 
-        fetch( 'http://localhost:5000/chatEmail', requestOptions)
+        fetch( `${url}/chatEmail`, requestOptions)
             .then(n=>{
                 chatsContainerComponent.removeChild(chatInnerContainer)
                 let afterFormChat=texts[0].text
