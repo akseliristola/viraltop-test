@@ -28,7 +28,7 @@ function createChatIcon() {
 }
 
 
-function createChatButtonAndChatDiv(){
+function createChatButtonAndChatDiv(positionList){
     const chatButton = document.createElement('div');
     chatButton.style.width = "55px";
     chatButton.style.height = "55px";
@@ -41,8 +41,8 @@ function createChatButtonAndChatDiv(){
     chatButton.style.justifyContent = "center";
     chatButton.style.alignItems = "center";
     chatButton.style.fontSize = "26px";
-    chatButton.style.bottom = "10px";
-    chatButton.style.left = "10px";
+    chatButton.style[positionList[0]] = "10px";
+    chatButton.style[positionList[1]] = "10px";
 
     var chatIconSvg = createChatIcon()
     chatButton.appendChild(chatIconSvg);
@@ -59,10 +59,9 @@ function createChatButtonAndChatDiv(){
     chatDiv.style.border = "0.1px solid grey";
     chatDiv.style.backgroundColor = "white";
     chatDiv.style.borderRadius = "10px";
-    chatDiv.style.bottom = "2px";
-
+    chatDiv.style[positionList[0]] = "2px";
+    chatDiv.style[positionList[1]] = "2px";
     
-    chatDiv.style.left = "2px";
     return [chatDiv,chatButton]
 }
 

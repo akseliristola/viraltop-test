@@ -36,12 +36,14 @@ function createChatInputArea(handleSendMessage){
     chatInputArea.style.bottom = "0";
     chatInputArea.style.marginBottom="2px"
     chatInputArea.style.marginTop="4px"
+    chatInputArea.style.paddingBottom="4px"
+
 
     const textarea = document.createElement('textarea');
     textarea.style.resize = "none";
     textarea.style.overflowY = "auto"; 
     textarea.style.width = "75%";
-    textarea.style.fontFamily="EB Garamond"
+    textarea.style.fontFamily="Arial"
     textarea.style.height="40px"
     textarea.style.marginLeft="5px"
 

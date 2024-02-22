@@ -7,16 +7,24 @@ import createReccomendContainer from './componentFunctions/createReccomendContai
 import createOneChat from './componentFunctions/createOneChat.js'
 import createChatInputArea from './constComponents/createChatInputArea.js'
 import createButtonsComponent from './componentFunctions/createButtonsComponent.js'
+
+//let allDragNotes=[]  
 import allDragNotes from './dragNotes.js'
 
+//let dragNotes=[]  
+let dragNotes = allDragNotes["finnish"]
+
+
+
 let originalChat
-let dragNotes=allDragNotes["finnish"]
 let inAction=false
 let originalChatComponent
 let id=null
 let chats=[]
 let buttonsContainer
 let curLang="finnish"
+let leadContainer
+let container
 
 function isValidColor(strColor) {
     var s = new Option().style;
@@ -39,11 +47,11 @@ let banned
     var pushState = history.pushState;
     history.pushState = function(state, title, url) {
         if((allowed.concat(banned).length>0)){
-            if(allowed.includes(url) && !banned.includes(url) ){
-                document.getElementById("fullContainer").style.display="block"
+            if(allowed.includes(url.split("/")[1]) && !banned.includes(url.split("/")[1]) ){
+                container.style.display="block"
               }
             else{
-                document.getElementById("fullContainer").style.display="none"
+                container.style.display="none"
             }
         }
 
@@ -70,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const chatsContainerComponent = document.createElement('div');
-    chatsContainerComponent.id="chatsComponent"
     chatsContainerComponent.style.width = "100%"
     chatsContainerComponent.style.height = "100%"
     chatsContainerComponent.style.display = "flex"
@@ -78,13 +85,29 @@ document.addEventListener('DOMContentLoaded', function() {
     chatsContainerComponent.style.overflow = "scroll"
     chatsContainerComponent.style.scrollBehavior = "smooth"
     chatsContainerComponent.style.padding = "1px"
-    chatsContainerComponent.style.fontFamily="EB Garamond"
-
+    chatsContainerComponent.style.fontFamily = "Arial"
 
     let param1 = scriptTag.getAttribute('data-param1');
 
     let colorParam = scriptTag.getAttribute('color');
     window.ChatComponentMainColor=isValidColor(colorParam) ? colorParam:"#041F3E"
+
+    let position=scriptTag.getAttribute('position');
+    let positionList
+
+    if(position === "bottom-right"){
+        positionList=["bottom","right"]
+    }
+    else if(position === "top-right"){
+        positionList=["top","right"]
+
+    }
+    else if(position === "top-left"){
+        positionList=["top","left"]
+    }
+    else{
+        positionList=["bottom","left"]
+    }
 
 
     let first=dragNotes.find(n=>n.title.connection === "0")
@@ -118,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if(next.title.title.startsWith("!")){
                         let newRes=createOneChat({"role":"system","content":next.title.title.slice(1)},chats)
                         chatsContainerComponent.appendChild(newRes)
-                        let leadContainer=createLeadContainer(next.texts,chatsContainerComponent,chats,url)
+                        leadContainer=createLeadContainer(next.texts,chatsContainerComponent,chats,url)
                         chatsContainerComponent.appendChild(leadContainer)
 
                     }
@@ -184,6 +207,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 chatsContainerComponent.removeChild(buttonsContainer)
             }
             catch(e){}
+            try{
+                chatsContainerComponent.removeChild(leadContainer)
+            }catch(e){}
+
             chatsContainerComponent.appendChild(newChat)
 
             let dotsContainer = createOneChat("dots",chats)
@@ -261,16 +288,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function refreshChat(){
         if(!inAction){
             chats=[originalChat]
-            const chatsComponent=document.getElementById("chatsComponent")
-            while (chatsComponent.firstChild) {
-                chatsComponent.removeChild(chatsComponent.firstChild);
+            while (chatsContainerComponent.firstChild) {
+                chatsContainerComponent.removeChild(chatsContainerComponent.firstChild);
             }
-            chatsComponent.appendChild(originalChatComponent)
+            chatsContainerComponent.appendChild(originalChatComponent)
             id=null
             if(first && first.texts && first.texts.length>0){
                 const button = first.texts
                 buttonsContainer = createButtonsComponent(button,handleButtonClick);
-                chatsComponent.appendChild(buttonsContainer)
+                chatsContainerComponent.appendChild(buttonsContainer)
             }
         }
     }
@@ -296,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
         chatsContainerComponent.appendChild(buttonsContainer)
     }
 
-    const [chatDiv,chatButton] = createChatButtonAndChatDiv()
+    const [chatDiv,chatButton] = createChatButtonAndChatDiv(positionList)
 
     const chatInputArea=createChatInputArea(handleSendMessage)
 
@@ -311,12 +337,11 @@ document.addEventListener('DOMContentLoaded', function() {
     chatDiv.appendChild(chatsContainerComponent)
     chatDiv.appendChild(chatInputArea);
 
-    const container = document.createElement('buttonContainer');
-    container.id="fullContainer"
+    container = document.createElement('buttonContainer');
     container.appendChild(chatButton);
     container.appendChild(chatDiv);
 
-    if(allowed.concat(banned).length>0 && (!allowed.includes(window.location.pathname) || banned.includes(window.location.pathname)) ){
+    if(allowed.concat(banned).length>0 && (!allowed.includes(window.location.pathname.split("/")[1]) || banned.includes(window.location.pathname.split("/")[1])) ){
         container.style.display="none"
     }
 
@@ -325,5 +350,47 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     document.body.appendChild(container)
+
+
+/*     const blankElement=document.createElement("input")
+    blankElement.style.display="none"
+    blankElement.id="viralTopInput"
+    document.head.appendChild(blankElement)
+    
+    blankElement.addEventListener('input', function() {
+        handleCompanyChange(blankElement.value)
+      })
+     
+    
+    async function handleCompanyChange(newCompanyID){
+        param1=newCompanyID
+        let vv=await fetch(`${url}/companyDragNotes/${newCompanyID}`)
+        allDragNotes=await vv.json()
+        console.log(allDragNotes)
+
+        let header=document.getElementById("chatHeader")
+
+        if(Object.keys(allDragNotes).length>1){
+            let fiEnButton=createFiEnButton(handleLanguageChange)
+            header.appendChild(fiEnButton)
+        }
+        else{
+            const fienButton = document.getElementById("FiEnButton")
+            if(fienButton){
+                header.removeChild(fienButton)
+            }
+        }
+        curLang="finnish"
+        dragNotes=allDragNotes[curLang]
+        console.log(1,dragNotes)
+        if(dragNotes){
+            first=dragNotes.find(n=>n.title.connection === "0")
+        }
+
+        originalChat = first === undefined ? {"role":"system","content":"Hei, miten voin auttaa sinua?"} : {"role":"system","content":first.title.title}
+        originalChatComponent =createOneChat(originalChat,chats)
+
+        refreshChat()
+    }  */
 
 })

@@ -11,6 +11,7 @@ function createLeadContainer(texts,chatsContainerComponent,chats,url){
     parent.style.marginLeft = "50%"
     parent.style.transform="translateX(-50%)"
     parent.style.marginTop = "10px"
+    parent.style.fontSize="14px"
 
     let emailDiv=document.createElement("div")
     emailDiv.style.display="flex"
@@ -52,13 +53,14 @@ function createLeadContainer(texts,chatsContainerComponent,chats,url){
 
     let text=document.createElement("textarea")
     text.style.resize="none"
+    text.style.fontSize="12px"
 
     textDiv.appendChild(textText)
     textDiv.appendChild(text)
     parent.appendChild(textDiv)        
 
     let sendButton = document.createElement("button")
-    sendButton.innerText="send"
+    sendButton.innerText="Lähetä"
 
     sendButton.addEventListener('click', function () {
         chatsContainerComponent.removeChild(parent)

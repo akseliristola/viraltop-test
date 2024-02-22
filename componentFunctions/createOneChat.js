@@ -7,8 +7,8 @@ chatTemplate.style.backgroundColor="#f2f2f2"
 chatTemplate.style.color = "black"
 chatTemplate.style.borderRadius= "8px"
 chatTemplate.style.padding="10px"
-chatTemplate.style.fontFamily = "EB Garamond";
-chatTemplate.style.fontSize="16px"
+chatTemplate.style.fontFamily = "Arial";
+chatTemplate.style.fontSize="14px"
 chatTemplate.style.fontWeight="500"
 
 let chatInnerContainerTemplate = document.createElement('div');

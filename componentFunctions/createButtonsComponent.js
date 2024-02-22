@@ -23,7 +23,7 @@ function createButtonsComponent(buttons,handleButtonClick) {
         button.style.cursor = 'pointer'
         button.style.width="70%"
         button.style.display = 'flex';
-        button.style.fontFamily = "EB Garamond";
+        button.style.fontFamily = "Arial";
         button.style.fontSize="12px"
         button.innerText = originalButton.text
 
